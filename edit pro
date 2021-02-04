@@ -1,0 +1,7 @@
+<%
+SQL20 = "Select * FROM dbo.tblBlacklist_PNs where ID = " & request("PKV") 
+Set RS20 = Server.CreateObject("ADODB.Recordset")
+RS20.Open SQL20, Conn, 3, 3
+%>
+
+' single records selecc for add, edit and delete functions
