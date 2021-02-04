@@ -1,0 +1,50 @@
+<%
+Response.Buffer = True
+
+	If Request("NAV") = "" Then
+	   intPage = 1	
+	Else
+	   intPage = Request("NAV")
+	End If
+
+ShipSearch = trim(Request("ShipSearch"))
+
+    SQL = "SELECT top 8 * from tblPayments where (ShipZip like '%" & ShipSearch & "%' or ShipCity like '%" & ShipSearch & "%' or ShipState like '%" & ShipSearch & "%' or ShipCountry like '%" & ShipSearch & "%') order by DateProcessed desc"           
+    Set rs              = Server.CreateObject("ADODB.Recordset")
+    rs.CursorLocation   = 3
+    rs.CursorType       = 3
+    rs.ActiveConnection = Conn
+    rs.Open SQL, Conn, 3, 3
+
+    rs.PageSize         = 8
+    rs.CacheSize        = rs.PageSize
+    intPageCount        = rs.PageCount 
+    intRecordCount      = rs.RecordCount 
+
+    If cInt(intPage) > cInt(intPageCount) Then intPage = intPageCount
+    If cInt(intPage) <= 0 Then intPage = 1
+
+    If   intRecordCount > 0 Then
+        rs.AbsolutePage = intPage
+               intStart = rs.AbsolutePosition
+       If cInt(intPage) = cInt(intPageCount) Then
+	      intFinish = intRecordCount
+    Else
+              intFinish = intStart + (rs.PageSize - 1)
+       End if
+    End If
+
+If (not rs.BOF) and (not rs.EOF) then
+%>
+
+' grab the recordset above and place it in a table below
+
+<% For intRecord = 1 to rs.PageSize %>
+
+' move through the records set with a looping html <tr>
+
+<% rs.MoveNext
+If rs.EOF Then Exit for
+Next %>
+
+' until the end of the recordset then end if
