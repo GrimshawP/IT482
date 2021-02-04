@@ -1,0 +1,27 @@
+<%
+Set Conn3 = Server.CreateObject("ADODB.Connection")
+Conn3.Open "Provider=SQLOLEDB;Initial Catalog=Equipment;Data Source=SQL1\SQL1;Trusted_Connection=yes;"
+SQL8 = "Select * FROM dbo.tblEquipPNs where PartNumber like '"& rs20("PartNumber") &"%' "
+Set RS8 = Server.CreateObject("ADODB.Recordset")
+RS8.Open SQL8, Conn3, 3, 3
+%>
+
+start your table and then loop wtih <TR> tags
+
+<% if rs8.recordcount > 0 then %>
+<% rs8.MoveFirst
+do while Not rs8.eof %>
+<tr>
+<td><font face="verdana" size=1 color=silver><b><%=Ucase(rs8("ID"))%></td>
+<td><font face="verdana" size=1 color=silver><b><%=Ucase(rs8("Status"))%></td>
+<td align=center><font face="verdana" size=1 color=silver><b><%=Ucase(rs8("mfg"))%></td>
+<td><font face="verdana" size=1 color=silver><b><%=Ucase(rs8("PartNumber"))%></td>
+
+<tr>
+<% rs8.MoveNext
+loop %>
+<% else %>
+<tr>
+<td bgcolor=white><font face="verdana" size=1><b>No Records Found</td>
+<tr>
+<% end if %>
