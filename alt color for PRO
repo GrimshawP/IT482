@@ -1,0 +1,10 @@
+<%
+count=count + 1
+i_last=right(count,1) 
+select case i_last 
+case "1","3","5","7","9"
+bgcolor = "#FFD8D8"
+case else
+bgcolor = "#FFF2F2"
+end select
+%>
